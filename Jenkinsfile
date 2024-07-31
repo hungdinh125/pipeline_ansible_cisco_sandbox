@@ -5,7 +5,7 @@ pipeline {
         stage('Clone the repository') {
             steps {
                 git (branch: 'main',
-                     url: 'https://github.com/hungdinh125/jenkins.git')
+                     url: 'https://github.com/hungdinh125/pipeline_ansible_cisco_sandbox.git')
             }
         }
         stage('Deploy New Configuration - DEV') {
