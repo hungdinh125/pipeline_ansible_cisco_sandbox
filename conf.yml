@@ -7,7 +7,7 @@
   connection: local
   tasks:
     - name: Provision VLAN NXOS
-      cisco.nxos.nxos_vlans:
+      cisco.nxos.nxos_vlan:
         config:
           - vlan_id: "{{ item }}"
             state: active
