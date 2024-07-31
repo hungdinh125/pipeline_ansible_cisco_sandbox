@@ -14,7 +14,7 @@ pipeline {
             }
         }
         stage('Retrieve and validate show commands - DEV') {
-            stepss {
+            steps {
                 sh "ansible-playbook verify.yml -i hosts_dev"
             }
         }
@@ -24,14 +24,14 @@ pipeline {
             }
         }
         stage('Retrieve and validate show commands - PROD') {
-            stepss {
+            steps {
                 sh "ansible-playbook verify.yml -i hosts_prod"
             }
         }
     }
     post {
         always {
-            cleanWs(cleanWhenNotBuild: false,
+            cleanWs(cleanWhenNotBuilt: false,
                     deleteDirs: true,
                     disableDeferredWipeout: true,
                     notFailBuild: true)
