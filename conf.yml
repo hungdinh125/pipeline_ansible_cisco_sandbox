@@ -1,0 +1,24 @@
+---
+
+# Playbook to create VLANs on Cisco Nexus switch from file
+- name: Configure vlans
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Provision VLAN NXOS
+      cisco.nxos.nxos_vlans:
+        config:
+          - vlan_id: "{{ item }}"
+            state: active
+      with_items: "{{ lookup('file', 'vlans.txt').splitlines() }}"
+      when: ansible_network_os == 'cisco.nxos.nxos'
+
+    - name: Provision VLAN on IOS
+      cisco.ios.ios_vlans:
+        config:
+          - vlan_id: "{{ item }}"
+            state: active
+      with_items: "{{ lookup('file', 'vlans.txt').splitlines() }}"
+      when: ansible_network_os == 'cisco.ios.ios'
+

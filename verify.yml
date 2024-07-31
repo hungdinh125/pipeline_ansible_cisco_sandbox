@@ -1,0 +1,21 @@
+---
+
+# Playbook for the verification of VLANs on Cisco Nexus switch
+- name: Verify VLANs
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Gather vlans facts from the device using nxos_vlans
+      cisco.nxos.nxos_vlans:
+        state: gathered
+      register: vlans
+    
+    - name: Print VLAN information
+      debug: var=vlans.gathered
+
+    - name: Run show vlan id to see if the vlan is active
+      cisco.nxos.nxos_command:
+        commands: show vlan id {{ item }}
+        wait_for: result[0] contains active
+      with_items: "{{ lookup('file', 'vlans.txt').splitlines() }}"
