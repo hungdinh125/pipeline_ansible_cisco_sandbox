@@ -1,0 +1,24 @@
+---
+
+- name: Retrieve configuration and save it
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Retrieve configuration
+      nxos_command:
+        commands:
+          - term length 0
+          - show running-config
+      register: running_config
+
+    - name: Save the configuration to a file
+      copy:
+        content: " {{ running_config.stdout[1] }}"
+        dest: "saved_configuration/{{ inventory_hostname }}.cfg"
+
+    - name: Save the configuration to startup configuration
+      nxos_command:
+        commands:
+          - copy running-config startup-config
+
