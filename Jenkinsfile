@@ -11,7 +11,7 @@ pipeline {
         
         stage('Clone the repository to container') {
             steps {
-                sh 'docker exec -i ansible-git /bin/sh -c "git clone https://github.com/hungdinh125/pipeline_ansible_cisco_sandbox.git"'                
+                sh 'docker exec -i ansible_git /bin/sh -c "git clone https://github.com/hungdinh125/pipeline_ansible_cisco_sandbox.git"'                
             }
         }
                 
