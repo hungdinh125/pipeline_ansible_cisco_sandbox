@@ -17,6 +17,7 @@ pipeline {
                 
         stage('Save running config - DEV') {
             steps {
+                sh 'docker exec -i ansible_git /bin/sh -c "mkdir pipeline_ansible_cisco_sandbox/saved_configuration"'
                 sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
             }
         }
