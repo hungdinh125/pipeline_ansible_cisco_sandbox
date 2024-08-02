@@ -17,32 +17,32 @@ pipeline {
                 
         stage('Save running config - DEV') {
             steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook save_config.yml -i hosts_dev"'
+                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
             }
         }
         stage('Deploy New Configuration - DEV') {
             steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook conf.yml -i hosts_dev"'
+                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/conf.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
             }
         }
         stage('Retrieve and validate show commands - DEV') {
             steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook verify.yml -i hosts_dev"'
+                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/verify.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
             }
         }
         stage('Save running config - PROD') {
             steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook save_config.yml -i hosts_prod"'
+                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
             }
         }
         stage('Deploy New Configuration - PROD') {
             steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook conf.yml -i hosts_prod"'
+                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/conf.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
             }
         }
         stage('Retrieve and validate show commands - PROD') {
             steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook verify.yml -i hosts_prod"'
+                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/verify.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
             }
         }
     }
