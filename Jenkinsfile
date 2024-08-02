@@ -53,6 +53,6 @@ pipeline {
                     disableDeferredWipeout: true,
                     notFailBuild: true)
         }
-        sh "docker rm -f ansible_git"
+            sh "docker rm -f ansible_git"
     }
 }
