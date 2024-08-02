@@ -52,7 +52,7 @@ pipeline {
                     deleteDirs: true,
                     disableDeferredWipeout: true,
                     notFailBuild: true)
-        }
             sh "docker rm -f ansible_git"
+        }
     }
 }
