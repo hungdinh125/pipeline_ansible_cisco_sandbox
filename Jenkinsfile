@@ -15,11 +15,11 @@ pipeline {
             }
         }
                 
-        stage('Save running config - DEV') {
-            steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
-            }
-        }
+//        stage('Save running config - DEV') {
+//            steps {
+//                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
+//            }
+//        }
         stage('Deploy New Configuration - DEV') {
             steps {
                 sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/conf.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
@@ -29,12 +29,22 @@ pipeline {
             steps {
                 sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/verify.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
             }
-        }
-        stage('Save running config - PROD') {
-            steps {
-                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
+            post {
+                failure {
+                    sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/clean.yml -i pipeline_ansible_cisco_sandbox/hosts_dev" '
+                }
             }
         }
+//        stage('Save running config - post changes - DEV') {
+//            steps {
+//                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_dev"'
+//            }
+//        }
+//        stage('Save running config - PROD') {
+//            steps {
+//                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
+//            }
+//        }
         stage('Deploy New Configuration - PROD') {
             steps {
                 sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/conf.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
@@ -44,7 +54,17 @@ pipeline {
             steps {
                 sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/verify.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
             }
+            post {
+                failure {
+                    sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/clean.yml -i pipeline_ansible_cisco_sandbox/hosts_prod" '
+                }
+            }            
         }
+//        stage('Save running config - post changes - PROD') {
+//            steps {
+//                sh 'docker exec -i ansible_git /bin/sh -c "ansible-playbook pipeline_ansible_cisco_sandbox/save_config.yml -i pipeline_ansible_cisco_sandbox/hosts_prod"'
+//            }
+//        }
     }
     post {
         always {
